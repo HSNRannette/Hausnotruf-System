@@ -35,13 +35,11 @@ def blink_led(r, g, b, duration=0.5):
         set_led_color(0, 0, 0)
         time.sleep(duration)
 
-# Blinkt Blau, während die Verbindung hergestellt wird
-blink_led(0, 0, 255)
-
-
 while not wlan.isconnected():
     print("Verbinden...")
     time.sleep(1)
+    # Blinkt Blau, während die Verbindung hergestellt wird
+    blink_led(0, 0, 255)
 
 print("Verbunden, IP Adresse:", wlan.ifconfig()[0])
 
