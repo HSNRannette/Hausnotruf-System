@@ -42,7 +42,8 @@ print("Verbunden, IP Adresse:", wlan.ifconfig()[0])
 # Matrix-API Einstellungen
 matrix_server = "https://matrix.org"  # Matrix-Server, Element als App installiert
 access_token = "syt_aHNucmFuYmE_vSvbFHbibprhTxvJBBoD_4IRejw"  # Teilnehmer:in
-room_id = "!FTmUTmQleJsspLegXD:matrix.org"  # oder der Raum auf deinem Server https://matrix.to/#/#NotrufePicoW:matrix.org
+room_id = "!FTmUTmQleJsspLegXD:matrix.org"  
+# oder der Raum auf deinem Server https://matrix.to/#/#NotrufePicoW:matrix.org
 
 # Nachricht senden
 def send_message(message):
