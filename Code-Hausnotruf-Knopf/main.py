@@ -1,7 +1,8 @@
 import network
 import urequests as requests
 import time
-from machine import Pin, PWM
+from machine import Pin, PWM, I2C
+from mpu6050 import MPU6050
 
 # Netzwerk einrichten/ WLAN-Verbindung
 ssid = "AndroidAP25A5"
@@ -12,9 +13,9 @@ wlan.active(True)
 wlan.connect(ssid, password)
 
 # RGB-LED Setup
-led_r = PWM(Pin(24))
-led_g = PWM(Pin(25))
-led_b = PWM(Pin(26))
+led_r = PWM(Pin(15))
+led_g = PWM(Pin(16))
+led_b = PWM(Pin(17))
 
 led_r.freq(1000)
 led_g.freq(1000)
@@ -26,11 +27,10 @@ def set_led_color(r, g, b):
     led_b.duty_u16(int(b * 65535 / 255))
 
 def blink_led(r, g, b, duration=0.5):
-    while not wlan.isconnected():
-        set_led_color(r, g, b)
-        time.sleep(duration)
-        set_led_color(0, 0, 0)
-        time.sleep(duration)
+    set_led_color(r, g, b)
+    time.sleep(duration)
+    set_led_color(0, 0, 0)
+    time.sleep(duration)
 
 # Blinkt Blau, während die Verbindung hergestellt wird
 while not wlan.isconnected():
@@ -66,19 +66,69 @@ send_message("System gestartet und verbunden")
 set_led_color(0, 255, 0)  # Grün ohne Blinken
 
 # Setup für Notfallknopf
-button = Pin(19, Pin.IN, Pin.PULL_UP)
+button = Pin(14, Pin.IN, Pin.PULL_UP)
+
+# Setup für den Beschleunigungssensor MPU6050
+i2c = I2C(0, scl=Pin(2), sda=Pin(3))
+accelerometer = MPU6050(i2c)
+
+# Funktion zum Erkennen eines Sturzes
+def detect_fall():
+    threshold = 15
+    acceleration = accelerometer.get_accel_data()
+    total_acc = sum([abs(acceleration['x']), abs(acceleration['y']), abs(acceleration['z'])])
+    return total_acc > threshold
+
+def wait_for_button_press(duration):
+    start_time = time.time()
+    while time.time() - start_time < duration:
+        if button.value():
+            return False
+        time.sleep(0.1)
+    return True
 
 try:
     while True:
         if not button.value():
             set_led_color(255, 0, 0)  # Rot
-            for _ in range(10):  # Blinkt 10 mal
+            for _ in range(20):  # Blinkt 20 mal
                 set_led_color(255, 0, 0)
                 time.sleep(0.1)
                 set_led_color(0, 0, 0)
                 time.sleep(0.1)
             send_message("Notfallknopf gedrückt!")
-            break
+            
+            # Blink LED rot bis der Knopf für 5 Sekunden gedrückt wird
+            while True:
+                blink_led(255, 0, 0, duration=0.5)
+                if not button.value():
+                    if wait_for_button_press(5):
+                        break
+            
+            # Nach 5 Sekunden drücken wechselt die LED zu Grün und Schleife ist wieder aktiv
+            set_led_color(0, 255, 0)  # Grün ohne Blinken
+            send_message("Patient A erhielt Hilfe")
+
+        if detect_fall():
+            set_led_color(255, 0, 0)  # Rot
+            for _ in range(20):  # Blinkt 20 mal
+                set_led_color(255, 0, 0)
+                time.sleep(0.1)
+                set_led_color(0, 0, 0)
+                time.sleep(0.1)
+            send_message("Patient A gestürzt, dringend Hilfe benötigt!")
+            
+            # Blink LED rot bis der Knopf für 5 Sekunden gedrückt wird
+            while True:
+                blink_led(255, 0, 0, duration=0.5)
+                if not button.value():
+                    if wait_for_button_press(5):
+                        break
+            
+            # Nach 5 Sekunden drücken wechselt die LED zu Grün und Schleife ist wieder aktiv
+            set_led_color(0, 255, 0)  # Grün ohne Blinken
+            send_message("Patient A gestürzt, dringend Hilfe benötigt!")
+
         time.sleep(0.1)
 finally:
     # GPIO-Pins freigeben
