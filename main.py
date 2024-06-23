@@ -1,4 +1,5 @@
 # Main.py läuft automatisch, sobald Pico W eine Energieverbindung hat.
+
 import network # Für die Mobile Hotspotverbindung
 import urequests as requests
 import time
@@ -42,5 +43,6 @@ def send_message(message):
     else:
         print(f"Fehler beim Senden der Nachricht: {response.status_code}, {response.text}")
 
-# Beispielnachricht senden
-send_message("HILFE! Brauche ein Notarzt. Patient A!")
+# Nachricht senden
+send_message("Hausnotruf Aktiv")
+
