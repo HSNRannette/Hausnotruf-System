@@ -43,5 +43,4 @@ def send_message(message):
         print(f"Fehler beim Senden der Nachricht: {response.status_code}, {response.text}")
 
 # Beispielnachricht senden
-send_message("HILFE! Amelie, Brauche ein Notarzt. Patient A!")
-
+send_message("HILFE! Brauche ein Notarzt. Patient A!")
