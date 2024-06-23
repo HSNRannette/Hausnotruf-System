@@ -1,12 +1,9 @@
-# Main.py läuft automatisch, sobald Pico W eine Energieverbindung hat.
-
-import network # Für die Mobile Hotspotverbindung
+import network
 import urequests as requests
 import time
-from machine import Pin, PWM # to be able to work with the hardware
+from machine import Pin, PWM
 
-
-# Netwerk einrichten/ WLAN-Verbindung
+# Netzwerk einrichten/ WLAN-Verbindung
 ssid = "AndroidAP25A5"
 password = "gjht7545"
 
@@ -15,9 +12,9 @@ wlan.active(True)
 wlan.connect(ssid, password)
 
 # RGB-LED Setup
-led_r = PWM(Pin(17))
-led_g = PWM(Pin(16))
-led_b = PWM(Pin(15))
+led_r = PWM(Pin(24))
+led_g = PWM(Pin(25))
+led_b = PWM(Pin(26))
 
 led_r.freq(1000)
 led_g.freq(1000)
@@ -35,18 +32,16 @@ def blink_led(r, g, b, duration=0.5):
         set_led_color(0, 0, 0)
         time.sleep(duration)
 
+# Blinkt Blau, während die Verbindung hergestellt wird
 while not wlan.isconnected():
     print("Verbinden...")
-    time.sleep(1)
-    # Blinkt Blau, während die Verbindung hergestellt wird
-    blink_led(0, 0, 255)
+    blink_led(0, 0, 255, duration=0.5)
 
 print("Verbunden, IP Adresse:", wlan.ifconfig()[0])
 
-
 # Matrix-API Einstellungen
 matrix_server = "https://matrix.org"  # Matrix-Server, Element als App installiert
-access_token = "syt_aHNucmFuYmE_vSvbFHbibprhTxvJBBoD_4IRejw" # Teilnehmer:in
+access_token = "syt_aHNucmFuYmE_vSvbFHbibprhTxvJBBoD_4IRejw"  # Teilnehmer:in
 room_id = "!FTmUTmQleJsspLegXD:matrix.org"  # oder der Raum auf deinem Server https://matrix.to/#/#NotrufePicoW:matrix.org
 
 # Nachricht senden
@@ -70,18 +65,26 @@ def send_message(message):
 send_message("System gestartet und verbunden")
 set_led_color(0, 255, 0)  # Grün ohne Blinken
 
-
 # Setup für Notfallknopf
 button = Pin(19, Pin.IN, Pin.PULL_UP)
 
-while True:
-    if not button.value():
-        set_led_color(255, 0, 0)  # Rot
-        for _ in range(10):  # Blinkt 10 mal
-            set_led_color(255, 0, 0)
-            time.sleep(0.1)
-            set_led_color(0, 0, 0)
-            time.sleep(0.1)
-        send_message("Notfallknopf gedrückt!")
-        break
-    time.sleep(0.1)
+try:
+    while True:
+        if not button.value():
+            set_led_color(255, 0, 0)  # Rot
+            for _ in range(10):  # Blinkt 10 mal
+                set_led_color(255, 0, 0)
+                time.sleep(0.1)
+                set_led_color(0, 0, 0)
+                time.sleep(0.1)
+            send_message("Notfallknopf gedrückt!")
+            break
+        time.sleep(0.1)
+finally:
+    # GPIO-Pins freigeben
+    led_r.deinit()
+    led_g.deinit()
+    led_b.deinit()
+    button.init(Pin.IN)  # Setzt den Knopf-Pin auf den Standard-Eingangsmodus
+    wlan.active(False)  # WLAN deaktivieren
+    print("GPIOs freigegeben und WLAN deaktiviert")
