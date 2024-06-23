@@ -3,16 +3,41 @@
 import network # Für die Mobile Hotspotverbindung
 import urequests as requests
 import time
-from machine import Pin # to be able to work with the hardware
-from time import sleep # to add delays in the program
+from machine import Pin, PWM # to be able to work with the hardware
 
-# Netwerk einrichten
+
+# Netwerk einrichten/ WLAN-Verbindung
 ssid = "AndroidAP25A5"
 password = "gjht7545"
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(ssid, password)
+
+# RGB-LED Setup
+led_r = PWM(Pin(17))
+led_g = PWM(Pin(16))
+led_b = PWM(Pin(15))
+
+led_r.freq(1000)
+led_g.freq(1000)
+led_b.freq(1000)
+
+def set_led_color(r, g, b):
+    led_r.duty_u16(int(r * 65535 / 255))
+    led_g.duty_u16(int(g * 65535 / 255))
+    led_b.duty_u16(int(b * 65535 / 255))
+
+def blink_led(r, g, b, duration=0.5):
+    while not wlan.isconnected():
+        set_led_color(r, g, b)
+        time.sleep(duration)
+        set_led_color(0, 0, 0)
+        time.sleep(duration)
+
+# Blinkt Blau, während die Verbindung hergestellt wird
+blink_led(0, 0, 255)
+
 
 while not wlan.isconnected():
     print("Verbinden...")
@@ -44,5 +69,21 @@ def send_message(message):
         print(f"Fehler beim Senden der Nachricht: {response.status_code}, {response.text}")
 
 # Nachricht senden
-send_message("Hausnotruf Aktiv")
+send_message("System gestartet und verbunden")
+set_led_color(0, 255, 0)  # Grün ohne Blinken
 
+
+# Setup für Notfallknopf
+button = Pin(19, Pin.IN, Pin.PULL_UP)
+
+while True:
+    if not button.value():
+        set_led_color(255, 0, 0)  # Rot
+        for _ in range(10):  # Blinkt 10 mal
+            set_led_color(255, 0, 0)
+            time.sleep(0.1)
+            set_led_color(0, 0, 0)
+            time.sleep(0.1)
+        send_message("Notfallknopf gedrückt!")
+        break
+    time.sleep(0.1)
