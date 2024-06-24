@@ -57,12 +57,12 @@ def send_message(message):
     
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
-        print("Nachricht gesendet: System gestartet und verbunden!")
+        print("Nachricht gesendet an Desktop und Smartphone")
     else:
         print(f"Fehler beim Senden der Nachricht: {response.status_code}, {response.text}")
 
 # Nachricht senden
-send_message("System gestartet und verbunden")
+send_message("System von Patient, Herr Miller, gestartet und Notrufuhr aktiv!")
 set_led_color(0, 255, 0)  # Grün ohne Blinken
 
 # Setup für Notfallknopf
@@ -92,7 +92,7 @@ try:
     while True:
         if not button.value():
             set_led_color(0, 255, 0)  # Rot
-            send_message("Hilferuf, Patient A!")
+            send_message("Hilferuf, Patient Herr Miller!")
             print("Hilfe, Notfallknopf gedrückt!")
             for _ in range(20):  # Blinkt 20 mal
                 set_led_color(255, 0, 0)
@@ -111,7 +111,7 @@ try:
             # Nach 5 Sekunden drücken wechselt die LED zu Grün und Schleife ist wieder aktiv
             set_led_color(0, 255, 0)  # Grün ohne Blinken
             print("Pflegepersonal kommt!")
-            send_message("Patient A erhielt Hilfe")
+            send_message("Patient Herr Miller erhielt Hilfe")
 
       #  if detect_fall():
        #     set_led_color(255, 0, 0)  # Rot
@@ -131,7 +131,7 @@ try:
             
             # Nach 5 Sekunden drücken wechselt die LED zu Grün und Schleife ist wieder aktiv
             set_led_color(0, 255, 0)  # Grün ohne Blinken
-            send_message("Patient A erhielt Hilfe!")
+            send_message("Patient Herr Miller erhielt Hilfe!")
             
         time.sleep(0.1)
 finally:
