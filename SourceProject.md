@@ -26,6 +26,7 @@
 # Quellen Hausnotruf in Praxis
 - https://www.malteser.de/hausnotruf/kosten/leistungspakete.html#c960343
 - https://www.notrufsysteme.de/hausnotrufgeraete/
+- https://www.verbraucherzentrale.de/wissen/gesundheit-pflege/pflege-zu-hause/hausnotrufsysteme-schneller-draht-zur-hilfe-10566
 
 # Quellen Beschleunigungssensor joy-it SEN-MPU6050
 -https://joy-it.net/files/files/Produkte/SEN-MPU6050/SEN-MPU6050_Anleitung_2024-04-15.pdf
