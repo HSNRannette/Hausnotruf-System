@@ -11,10 +11,10 @@ Patienten mit chronischen Erkrankungen oder Herzproblemen sind häufig auf ein z
 # Zielsetzung
 Das Hauptziel des Projekts ist die Verbesserung der Sicherheit und des Wohlbefindens der Patienten durch eine kontinuierliche Überwachung der Herzfrequenz und der körperlichen Aktivität. Die Hauptkomponenten des Systems umfassen
 
--Raspberry Pi Pico W: als zentrale Steuereinheit zur Erfassung und Verarbeitung aller Sensordaten.
--ADXL345 Beschleunigungssensor: Wird zur Erkennung eines möglichen Sturzes verwendet.
--Notfallknopf: Kann vom Patienten manuell betätigt werden. Damit wird sofortige Hilfe angefordert.
--RGB-LED: Zeigt deutlich die Signalwirkung der Notsituation oder den Zustand des Patienten an.
+- Raspberry Pi Pico W: als zentrale Steuereinheit zur Erfassung und Verarbeitung aller Sensordaten.
+- SEN-MPU6050 Modul Beschleunigungssensor: Wird zur Erkennung eines möglichen Sturzes verwendet.
+- Notfallknopf: Kann vom Patienten manuell betätigt werden. Damit wird sofortige Hilfe angefordert.
+- RGB-LED: Zeigt deutlich die Signalwirkung der Notsituation oder den Zustand des Patienten an.
 
 
 Die Grundidee besteht darin, den Pico W als Steuer- und Kontrollelement zu verwenden. Er verwaltet alle Sensoren und empfängt die Vitalwerte des Patienten. Es hat die Aufgabe zu beurteilen, ob die Werte innerhalb der definierten Intervalle sind und bei Überschreitung der Intervalle Meldungen zu versenden. Die Meldungen gehen an die Endgeräte wie Smartphone oder Desktop des Pflegepersonals.
