@@ -29,6 +29,7 @@
 
 # Quellen Beschleunigungssensor joy-it SEN-MPU6050
 -https://joy-it.net/files/files/Produkte/SEN-MPU6050/SEN-MPU6050_Anleitung_2024-04-15.pdf
+-https://www.digikey.com/en/maker/projects/raspberry-pi-pico-rp2040-i2c-example-with-micropython-and-cc/47d0c922b79342779cdbd4b37b7eb7e2
 
 # Quellen RGB-LED
 -https://www.donskytech.com/control-rgb-led-using-micropython/
