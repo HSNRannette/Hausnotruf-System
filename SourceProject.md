@@ -6,7 +6,8 @@
 - https://learn.microsoft.com/de-de/powershell/scripting/samples/working-with-files-and-folders?view=powershell-7.4#creating-files-and-folders
 - https://git-scm.com/book/de/v2/Git-Grundlagen-%C3%84nderungen-nachverfolgen-und-im-Repository-speichern
   
-# Quellen für die Nutzung von Raspberry Pico W
+# Quellen für die Nutzung von Raspberry Pico 
+- https://pico.pinout.xyz/
 - https://www.raspberrypi.com/documentation/microcontrollers/?version=E0C9125B0D9B
 - https://datasheets.raspberrypi.com/
 - https://www.youtube.com/watch?v=0V2BEQQcb-M
@@ -29,6 +30,7 @@
 - https://www.verbraucherzentrale.de/wissen/gesundheit-pflege/pflege-zu-hause/hausnotrufsysteme-schneller-draht-zur-hilfe-10566
 
 # Quellen Beschleunigungssensor joy-it SEN-MPU6050
+- https://github.com/TimHanewich/MicroPython-Collection/blob/master/MPU6050/readme.md
 - https://joy-it.net/files/files/Produkte/SEN-MPU6050/SEN-MPU6050_Anleitung_2024-04-15.pdf
 - https://www.digikey.com/en/maker/projects/raspberry-pi-pico-rp2040-i2c-example-with-micropython-and-cc/47d0c922b79342779cdbd4b37b7eb7e2
 
